@@ -61,10 +61,11 @@ const LinkedInIcon = () => (
 // Storing data this way makes the component easier to update.
 const footerLinks = [
   { name: "About", href: "/about" },
-  { name: "Blogs", href: "#" },
+  { name: "Blogs", href: "/blogs" },
   { name: "Contact Us", href: "/contact" },
-  { name: "Careers", href: "#" },
+  { name: "Careers", href: "/careers" },
   { name: "Terms & Conditions", href: "/terms" },
+  { name: "Privacy", href: "/policy"}
 ];
 
 const socialLinks = [

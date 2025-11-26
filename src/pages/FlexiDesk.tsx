@@ -181,7 +181,7 @@ export default function FlexiDesk() {
             </p>
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 max-w-md mx-auto mb-8">
               <div className="text-white/90 text-sm">
-                <p><strong>Space ID:</strong> CS2-01 | <strong>Area:</strong> 207 Sq.ft | <strong>Seats:</strong> 9</p>
+                <p><strong>Space ID:</strong> CS2-01 | <strong>Seats:</strong> 9</p>
               </div>
             </div>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

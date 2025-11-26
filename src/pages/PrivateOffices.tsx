@@ -267,8 +267,6 @@ export default function PrivateOffices() {
                     <p className="text-xl font-bold text-lime-600">3-5 People</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-sm text-gray-500 mb-1">Office Size</p>
-                    <p className="text-xl font-bold text-lime-600">143-172 sq ft</p>
                   </div>
                   <div className="text-center">
                     <p className="text-sm text-gray-500 mb-1">Starting From</p>
@@ -288,7 +286,7 @@ export default function PrivateOffices() {
                       <span className="font-bold text-lime-600">₹30,000/month</span>
                     </div>
                     <p className="text-sm text-gray-600 mb-1">4 Total Seats (3 Chair + 1 Manager)</p>
-                    <p className="text-xs text-gray-500">143-145 sq ft • Perfect for small teams</p>
+                    <p className="text-xs text-gray-500">Perfect for small teams</p>
                   </div>
                   <div className="bg-gray-50 p-4 rounded-lg">
                     <div className="flex justify-between items-center mb-2">
@@ -296,7 +294,7 @@ export default function PrivateOffices() {
                       <span className="font-bold text-lime-600">₹35,000/month</span>
                     </div>
                     <p className="text-sm text-gray-600 mb-1">5 Total Seats (4 Chair + 1 Manager)</p>
-                    <p className="text-xs text-gray-500">171-172 sq ft • Ideal for growing teams</p>
+                    <p className="text-xs text-gray-500">Ideal for growing teams</p>
                   </div>
                 </div>
                 <p className="text-xs text-gray-600 italic text-center mt-3">* All prices are exclusive of GST</p>

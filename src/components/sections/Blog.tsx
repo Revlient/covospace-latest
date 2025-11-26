@@ -89,7 +89,7 @@ const Blog = () => {
               <div className="flex-shrink-0 w-6 h-6 sm:w-8 sm:h-8">
                 <SeeMoreIcon />
               </div>
-              <span>See More</span>
+              <a href="/blogs"><span>See More</span></a>
             </button>
           </header>
 

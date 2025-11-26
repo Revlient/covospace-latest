@@ -168,7 +168,7 @@ export default function MeetingRooms() {
             </p>
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 max-w-md mx-auto mb-8">
               <div className="text-white/90 text-sm">
-                <p><strong>Space ID:</strong> CS2-C1 | <strong>Area:</strong> 160 Sq.ft | <strong>Seats:</strong> 8</p>
+                <p><strong>Space ID:</strong> CS2-C1 | <strong>Seats:</strong> 8</p>
                 <p className="mt-2"><strong>Price:</strong> ₹700/Hour</p>
                 <p className="text-xs text-white/60 italic mt-2">* All prices are exclusive of GST</p>
               </div>
@@ -259,7 +259,7 @@ export default function MeetingRooms() {
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-1">{room.type}</h3>
                   <p className="text-lime-600 font-medium mb-1">{room.capacity}</p>
-                  <p className="text-sm text-gray-500 mb-3">{room.area}</p>
+
                   <div className="mb-2">
                     <span className="text-3xl font-bold text-gray-900">{room.price}</span>
                     <span className="text-gray-500 ml-2">{room.period}</span>
@@ -423,7 +423,7 @@ export default function MeetingRooms() {
               <div className="bg-lime-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl font-bold text-lime-600">1</span>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">Choose Room Size</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">Choose Room Type</h3>
               <p className="text-gray-600 text-sm">
                 Select from 4-seater huddle rooms to executive boardrooms based on your group size.
               </p>

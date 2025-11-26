@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-export default function Terms() {
+export default function Privacy() {
   const [tocOpen, setTocOpen] = useState(false);
 
   useEffect(() => {
@@ -32,16 +32,16 @@ export default function Terms() {
   }, []);
 
   const sections = [
-    { id: "section-1", title: "1. Services" },
-    { id: "section-2", title: "2. Responsibilities" },
-    { id: "section-3", title: "3. Confidentiality" },
-    { id: "section-4", title: "4. Fees and Payments" },
-    { id: "section-5", title: "5. Limitations" },
-    { id: "section-6", title: "6. Compliance" },
-    { id: "section-7", title: "7. Liability" },
-    { id: "section-8", title: "8. Termination" },
-    { id: "section-9", title: "9. Governing Law" },
-    { id: "section-10", title: "10. Amendments" },
+    { id: "section-1", title: "1. Information We Collect" },
+    { id: "section-2", title: "2. How We Use Your Information" },
+    { id: "section-3", title: "3. Sharing Your Information" },
+    { id: "section-4", title: "4. Cookies and Tracking Technologies" },
+    { id: "section-5", title: "5. Your Rights" },
+    { id: "section-6", title: "6. Data Security" },
+    { id: "section-7", title: "7. Retention of Data" },
+    { id: "section-8", title: "8. Third-Party Links" },
+    { id: "section-9", title: "9. Changes to This Policy" },
+    { id: "section-10", title: "10. Contact Us" },
   ];
 
   const SectionCard = ({
@@ -77,11 +77,14 @@ export default function Terms() {
         {/* Page header */}
         <header className="mb-8">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 leading-tight">
-            CovSpace — Terms &amp; Conditions
+            CovSpace — Privacy Policy
           </h1>
           <p className="mt-3 text-lg text-gray-600 max-w-3xl">
-            Welcome to Covspace. By using our services, you agree to these terms.
-            This page provides the full terms; click any section in the table of contents to jump there.
+            At Covspace, we value your trust and are committed to protecting your personal information. 
+            This Privacy Policy outlines how we collect, use, and safeguard your information when you use our platform.
+          </p>
+          <p className="mt-2 text-sm text-gray-500">
+            Last Updated: November 15, 2025
           </p>
         </header>
 
@@ -157,83 +160,131 @@ export default function Terms() {
           {/* Content */}
           <main className="md:col-span-8 lg:col-span-9">
             {/* Section 1 */}
-            <SectionCard id="section-1" title="1. Services">
+            <SectionCard id="section-1" title="1. Information We Collect">
               <p>
-                Covspace provides recruitment services to connect employers and candidates based on business requirements.
+                We collect the following types of information:
               </p>
+              <div className="pl-4">
+                <p>
+                  <strong>a. Personal Information:</strong>
+                </p>
+                <ul className="list-disc pl-6 space-y-2 mt-2">
+                  <li><strong>For Job Seekers:</strong> Name, email address, phone number, resume/CV, work experience, education details, and skills.</li>
+                  <li><strong>For Employers:</strong> Company name, contact details, job postings, and other business-related information.</li>
+                </ul>
+                <p className="mt-4">
+                  <strong>b. Non-Personal Information:</strong>
+                </p>
+                <ul className="list-disc pl-6 space-y-2 mt-2">
+                  <li>Browser type, IP address, device type, and usage data.</li>
+                  <li>Cookies and tracking technologies for analytics and functionality.</li>
+                </ul>
+              </div>
             </SectionCard>
 
             {/* Section 2 */}
-            <SectionCard id="section-2" title="2. Responsibilities">
+            <SectionCard id="section-2" title="2. How We Use Your Information">
               <p>
-                <strong>Employers:</strong> Provide accurate job details and comply with employment laws.
+                We use your information to:
               </p>
-              <p>
-                <strong>Candidates:</strong> Submit accurate information and participate actively in the recruitment process.
-              </p>
+              <ul className="list-disc pl-6 space-y-2 mt-2">
+                <li>Facilitate job matches between job seekers and employers.</li>
+                <li>Process applications and manage user profiles.</li>
+                <li>Provide customer support and respond to inquiries.</li>
+                <li>Send updates, job alerts, or promotional offers (with your consent).</li>
+                <li>Improve our platform through analytics and user feedback.</li>
+              </ul>
             </SectionCard>
 
             {/* Section 3 */}
-            <SectionCard id="section-3" title="3. Confidentiality">
+            <SectionCard id="section-3" title="3. Sharing Your Information">
               <p>
-                All shared information is kept confidential and used only for recruitment purposes.
+                We may share your data in the following situations:
               </p>
+              <ul className="list-disc pl-6 space-y-2 mt-2">
+                <li><strong>With Employers:</strong> Job seekers' profiles and applications will be shared with employers when applying for positions.</li>
+                <li><strong>With Job Seekers:</strong> Job postings and employer information will be visible to users.</li>
+                <li><strong>Third-Party Service Providers:</strong> For platform operations, analytics, and marketing.</li>
+                <li><strong>Legal Requirements:</strong> If required by law or to protect our rights and users.</li>
+              </ul>
             </SectionCard>
 
             {/* Section 4 */}
-            <SectionCard id="section-4" title="4. Fees and Payments">
+            <SectionCard id="section-4" title="4. Cookies and Tracking Technologies">
               <p>
-                Employers must pay agreed fees promptly. Refund policies, if applicable, are outlined in the agreement.
+                We use cookies and similar technologies to enhance your browsing experience, analyze site traffic, 
+                and personalize content. You can manage cookie preferences in your browser settings.
               </p>
             </SectionCard>
 
             {/* Section 5 */}
-            <SectionCard id="section-5" title="5. Limitations">
+            <SectionCard id="section-5" title="5. Your Rights">
               <p>
-                Covspace does not guarantee perfect matches or candidate performance. Disputes post-hiring are not our responsibility.
+                You have the right to:
               </p>
+              <ul className="list-disc pl-6 space-y-2 mt-2">
+                <li>Access, update, or delete your personal information.</li>
+                <li>Opt-out of marketing communications.</li>
+                <li>Deactivate your account by contacting us.</li>
+                <li>Request a copy of your data.</li>
+              </ul>
             </SectionCard>
 
             {/* Section 6 */}
-            <SectionCard id="section-6" title="6. Compliance">
+            <SectionCard id="section-6" title="6. Data Security">
               <p>
-                All parties must comply with applicable laws, including labor and data protection regulations.
+                We use industry-standard measures to protect your personal information. While we strive to ensure security, 
+                no system is completely secure.
               </p>
             </SectionCard>
 
             {/* Section 7 */}
-            <SectionCard id="section-7" title="7. Liability">
+            <SectionCard id="section-7" title="7. Retention of Data">
               <p>
-                Covspace is not liable for damages arising from the use of our services. Employers and candidates bear responsibility for their decisions.
+                We retain your data for as long as necessary to provide our services or as required by law. 
+                You may request data deletion at any time.
               </p>
             </SectionCard>
 
             {/* Section 8 */}
-            <SectionCard id="section-8" title="8. Termination">
+            <SectionCard id="section-8" title="8. Third-Party Links">
               <p>
-                Services can be terminated with prior notice. Outstanding obligations must be settled upon termination.
+                Our website may contain links to third-party websites. We are not responsible for the privacy practices 
+                of these websites.
               </p>
             </SectionCard>
 
             {/* Section 9 */}
-            <SectionCard id="section-9" title="9. Governing Law">
+            <SectionCard id="section-9" title="9. Changes to This Policy">
               <p>
-                These terms are governed by the laws of Jurisdiction.
+                We may update this Privacy Policy to reflect changes to our practices or for other operational, legal, 
+                or regulatory reasons. Changes will be posted on this page with a revised "Last Updated" date.
               </p>
             </SectionCard>
 
             {/* Section 10 */}
-            <SectionCard id="section-10" title="10. Amendments">
+            <SectionCard id="section-10" title="10. Contact Us">
               <p>
-                Covspace reserves the right to update and modify these Terms & Conditions. Any changes will be posted on our website with an updated effective date.
+                If you have any questions or concerns about this Privacy Policy or your data, please contact us at:
               </p>
+              <div className="mt-4 p-4 bg-gray-50 rounded-lg border">
+                <p className="font-medium text-gray-900">Contact Information</p>
+                <div className="mt-2 space-y-1 text-gray-700">
+                  <p>Email: privacy@covspace.com</p>
+                  <p>Phone: +91 918893 9892, +91 735659 3629</p>
+                  <p>Address: GK Tower, Chakkarapparambu Road<br />
+                Near to NH 66 Bypass, Near Holiday Inn Hotel<br />
+                Ernakulam- 682028
+                </p>
+                </div>
+              </div>
             </SectionCard>
 
-            {/* Footer of terms */}
+            {/* Footer of privacy policy */}
             <div className="mt-8 bg-white rounded-2xl border border-gray-100 p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-sm">
               <div>
                 <div className="text-sm text-gray-600">
-                  For any questions about these terms:
+                  For any questions about this Privacy Policy:
                 </div>
                 <div className="mt-2">
                   <Link

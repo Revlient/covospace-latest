@@ -37,12 +37,6 @@ const TechIcon = () => (
   </svg>
 );
 
-const QuoteIcon = () => (
-  <svg className="w-6 h-6 text-lime-600" fill="currentColor" viewBox="0 0 24 24">
-    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h4v10h-10z"/>
-  </svg>
-);
-
 const CheckIcon = () => (
   <svg className="w-5 h-5 text-lime-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
@@ -85,30 +79,6 @@ export default function OurClients() {
       count: "100+",
       description: "Law firms, accounting firms, consulting companies, and other professional services",
       services: ["Executive offices", "Client conference rooms", "Confidential spaces", "Business address", "Administrative support"]
-    }
-  ];
-
-  const testimonials = [
-    {
-      quote: "Covspace has been instrumental in our company's growth. The flexible workspace solutions allowed us to scale our team without the overhead of a traditional office lease.",
-      client: "Rajesh Kumar",
-      company: "TechFlow Solutions",
-      industry: "Software Development",
-      image: "https://randomuser.me/api/portraits/men/32.jpg"
-    },
-    {
-      quote: "The professional environment and networking opportunities at Covspace have opened doors to new business partnerships. It's more than just a workspace - it's a community.",
-      client: "Priya Nair",
-      company: "Design Studio Kerala",
-      industry: "Creative Agency",
-      image: "https://randomuser.me/api/portraits/women/44.jpg"
-    },
-    {
-      quote: "As a growing startup, we needed flexibility and professional facilities. Covspace provided exactly that, with conference rooms that impress our clients and a workspace that inspires our team.",
-      client: "Arjun Menon",
-      company: "GreenTech Innovations",
-      industry: "CleanTech Startup",
-      image: "https://randomuser.me/api/portraits/men/86.jpg"
     }
   ];
 
@@ -225,53 +195,7 @@ export default function OurClients() {
         </div>
       </section>
 
-      {/* Client Testimonials */}
-      <section 
-        className="relative py-12 sm:py-16 lg:py-20"
-        style={{
-          backgroundImage: 'url(https://res.cloudinary.com/dobqxxtml/image/upload/v1759948234/group-young-business-people-working-office_ajzmno.jpg)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
-        }}
-      >
-        <div className="absolute inset-0 bg-black/70" aria-hidden="true"></div>
-        <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4">
-              What Our Clients Say
-            </h2>
-            <p className="text-base sm:text-lg text-white/90 max-w-2xl mx-auto">
-              Hear from the businesses and professionals who have made Covspace their workspace of choice.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
-            {testimonials.map((testimonial, index) => (
-              <div key={index} className="bg-white/95 backdrop-blur-sm p-6 sm:p-8 rounded-xl shadow-lg border border-white/20 hover:bg-white transition-colors duration-300">
-                <div className="mb-4">
-                  <QuoteIcon />
-                </div>
-                <p className="text-gray-700 mb-6 leading-relaxed">"{testimonial.quote}"</p>
-                <div className="flex items-center">
-                  <img 
-                    src={testimonial.image} 
-                    alt={testimonial.client}
-                    className="w-12 h-12 rounded-full object-cover mr-4"
-                    loading="lazy"
-                  />
-                  <div>
-                    <h4 className="font-semibold text-gray-900">{testimonial.client}</h4>
-                    <p className="text-sm text-gray-600">{testimonial.company}</p>
-                    <p className="text-xs text-gray-500">{testimonial.industry}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
+          
       {/* Client Showcase */}
       <section className="bg-gray-50 py-12 sm:py-16 lg:py-20">
         <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
