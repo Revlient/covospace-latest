@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuotePanel } from '../components/ui/QuotePanelProvider';
+import { cmsApi } from '../lib/api';
+import { GalleryImage as CMSGalleryImage } from '../types/cms';
 
 // Icon components
 const GalleryIcon = () => (
@@ -28,42 +30,44 @@ const ChevronRightIcon = () => (
 );
 
 // Gallery data structure
-interface GalleryImage {
+interface GalleryItem {
   id: number;
   src: string;
   alt: string;
   category: string;
 }
 
-const galleryImages: GalleryImage[] = [
-  // Private Offices
-  { id: 1, src: 'https://res.cloudinary.com/dobqxxtml/image/upload/v1759945551/guy-shows-document-girl-group-young-freelancers-office-have-conversation-working_ftvh2b.jpg', alt: 'Private Office Space', category: 'Private Offices' },
-  { id: 2, src: '/gallery/l1.jpg', alt: 'Executive Office', category: 'Private Offices' },
-  { id: 3, src: 'https://res.cloudinary.com/dobqxxtml/image/upload/v1759946073/new_litted_g4kces.jpg', alt: 'Modern Private Office', category: 'Private Offices' },
-
-  // Coworking Spaces
-  { id: 4, src: '/gallery/m.jpg', alt: 'Coworking Area', category: 'Coworking Spaces' },
-  { id: 5, src: '/gallery/l2.jpg', alt: 'Open Workspace', category: 'Coworking Spaces' },
-  { id: 6, src: 'https://res.cloudinary.com/dobqxxtml/image/upload/v1759945668/group-business-executives-working-together_m0lxs8.jpg', alt: 'Collaborative Space', category: 'Coworking Spaces' },
-
-  // Conference Rooms
-  { id: 7, src: 'https://res.cloudinary.com/dobqxxtml/image/upload/v1759948586/IMG_2935_xsa1h4.jpg', alt: 'Conference Room', category: 'Conference Rooms' },
-  { id: 8, src: '/gallery/r1.jpg', alt: 'ConferenceSpace', category: 'Conference Rooms' },
-  { id: 9, src: '/gallery/r2.jpg', alt: 'Boardroom', category: 'Conference Rooms' },
-
-  // Common Areas & Amenities
-  { id: 10, src: '/gallery/l3.jpg', alt: 'Lounge Area', category: 'Common Areas' },
-  { id: 11, src: '/gallery/r3.jpg', alt: 'Break Room', category: 'Common Areas' },
-  { id: 12, src: 'https://res.cloudinary.com/dobqxxtml/image/upload/v1759947548/DSCN0759_eaza4f.jpg', alt: 'Reception Area', category: 'Common Areas' },
-];
-
 const categories = ['All', 'Private Offices', 'Coworking Spaces', 'Conference Rooms', 'Common Areas'];
 
 export default function Gallery() {
+  const [galleryImages, setGalleryImages] = useState<GalleryItem[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const { openQuote } = useQuotePanel();
+
+  useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        const data = await cmsApi.getGallery();
+        // Map API response to component structure
+        const mappedImages: GalleryItem[] = data.map((img: CMSGalleryImage) => ({
+          id: img.id,
+          src: img.imageUrl,
+          alt: img.title,
+          category: img.category
+        }));
+        setGalleryImages(mappedImages);
+      } catch (error) {
+        console.error('Failed to fetch gallery images:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchImages();
+  }, []);
 
   const filteredImages = selectedCategory === 'All'
     ? galleryImages
@@ -150,40 +154,48 @@ export default function Gallery() {
       {/* Gallery Grid Section */}
       <section className="py-12 sm:py-16 lg:py-20">
         <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-            {filteredImages.map((image, index) => (
-              <div
-                key={image.id}
-                className="group relative overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer bg-gray-100"
-                onClick={() => openLightbox(index)}
-                onKeyDown={(e) => e.key === 'Enter' && openLightbox(index)}
-                tabIndex={0}
-                role="button"
-                aria-label={`View ${image.alt}`}
-              >
-                <div className="aspect-[4/3] overflow-hidden">
-                  <img
-                    src={image.src}
-                    alt={image.alt}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6">
-                    <p className="text-white font-semibold text-base sm:text-lg">{image.alt}</p>
-                    <p className="text-lime-400 text-sm mt-1">{image.category}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Empty State */}
-          {filteredImages.length === 0 && (
-            <div className="text-center py-12">
-              <p className="text-gray-500 text-lg">No images found in this category.</p>
+          {loading ? (
+            <div className="flex justify-center items-center h-64">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-lime-600"></div>
             </div>
+          ) : (
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+                {filteredImages.map((image, index) => (
+                  <div
+                    key={image.id}
+                    className="group relative overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer bg-gray-100"
+                    onClick={() => openLightbox(index)}
+                    onKeyDown={(e) => e.key === 'Enter' && openLightbox(index)}
+                    tabIndex={0}
+                    role="button"
+                    aria-label={`View ${image.alt}`}
+                  >
+                    <div className="aspect-[4/3] overflow-hidden">
+                      <img
+                        src={image.src}
+                        alt={image.alt}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        loading="lazy"
+                      />
+                    </div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6">
+                        <p className="text-white font-semibold text-base sm:text-lg">{image.alt}</p>
+                        <p className="text-lime-400 text-sm mt-1">{image.category}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Empty State */}
+              {filteredImages.length === 0 && (
+                <div className="text-center py-12">
+                  <p className="text-gray-500 text-lg">No images found in this category.</p>
+                </div>
+              )}
+            </>
           )}
         </div>
       </section>

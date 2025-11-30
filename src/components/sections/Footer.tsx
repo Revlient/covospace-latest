@@ -1,5 +1,8 @@
+import { useState, useEffect } from 'react';
 import CovspaceLogo from "../ui/CovspaceLogo";
 import { Link } from "react-router-dom";
+import { cmsApi } from '../../lib/api';
+import { GlobalSettings } from '../../types/cms';
 
 const FacebookIcon = () => (
   <svg
@@ -68,23 +71,37 @@ const footerLinks = [
   { name: "Privacy", href: "/policy"}
 ];
 
-const socialLinks = [
-  {
-    name: "Facebook",
-    href: "https://www.facebook.com/profile.php?id=61581623110489",
-    icon: FacebookIcon,
-  },
-  {
-    name: "Instagram",
-    href: "https://www.instagram.com/cov_space/?hl=en",
-    icon: InstagramIcon,
-  },
-  { name: "Twitter", href: "#", icon: TwitterIcon },
-  { name: "LinkedIn", href: "#", icon: LinkedInIcon },
-];
-
 // --- Main Footer Component ---
 const Footer = () => {
+  const [settings, setSettings] = useState<GlobalSettings | null>(null);
+
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const data = await cmsApi.getSettings();
+        setSettings(data);
+      } catch (error) {
+        console.error('Failed to fetch settings:', error);
+      }
+    };
+    fetchSettings();
+  }, []);
+
+  const socialLinks = [
+    {
+      name: "Facebook",
+      href: settings?.social_facebook || "https://www.facebook.com/profile.php?id=61581623110489",
+      icon: FacebookIcon,
+    },
+    {
+      name: "Instagram",
+      href: settings?.social_instagram || "https://www.instagram.com/cov_space/?hl=en",
+      icon: InstagramIcon,
+    },
+    { name: "Twitter", href: settings?.social_twitter || "#", icon: TwitterIcon },
+    { name: "LinkedIn", href: settings?.social_linkedin || "#", icon: LinkedInIcon },
+  ];
+
   return (
     <footer className="bg-black text-white font-sans rounded-t-xl sm:rounded-t-2xl md:rounded-t-3xl overflow-hidden">
       {/* Mobile Layout (320px - 768px) */}

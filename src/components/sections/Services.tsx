@@ -1,59 +1,7 @@
-// import {ReactComponent as Ellipse} from '../Ellipse.svg'
-
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-const servicesData = [
-  {
-    title: 'Private Offices',
-    description: 'Your team deserves more than space — enjoy a premier, fully managed private office experience.',
-    route: '/private-offices',
-    features: [
-      'Flexible Plans',
-      '24x7 Security & Access',
-      'All-Inclusive - includes Internet and Services',
-    ],
-  },
-  {
-    title: 'Dedicated Desk',
-    description: 'Work your way with a dedicated desk in an aesthetically crafted coworking environment.',
-    route: '/dedicated-desk',
-    features: [
-      'Daily-Weekly-Monthly Plans',
-      'Free Secure Internet & WiFi',
-      'Mail & Courier Handling',
-    ],
-  },
-  {
-    title: 'Conference Rooms',
-    description: 'Reserve premium conference rooms designed with cutting-edge technology and complete amenities.',
-    route: '/meeting-rooms',
-    features: [
-      '4 - 8 Seater Conference Rooms',
-      'Audio and Video Conferencing',
-      'Catering on Request',
-    ],
-  },
-  {
-    title: 'Virtual Offices',
-    description: 'Establish your presence at a prime business address without the upfront cost.',
-    route: '/virtual-offices',
-    features: [
-      'Prime Business Address',
-      'Mail & Courier Handling',
-      'Call Answering & Forwarding',
-    ],
-  },
-  {
-    title: 'Business Address',
-    description: 'Company registration made simple — use our address.',
-    route: '/contact',
-    features: [
-      'Company Registration',
-      'Bank Account Support',
-      'Mail & Courier Handling',
-    ],
-  },
-];
+import { cmsApi } from '../../lib/api';
+import { Service } from '../../types/cms';
 
 const Background = () => (
        <div className="hidden absolute inset-0 sm:flex items-center justify-center pointer-events-none bg-white ">
@@ -131,6 +79,25 @@ const ServiceCard = ({ title, description, features, route }: ServiceCardProps) 
 
 // The main export component
 const ServicesSection = () => {
+  const [services, setServices] = useState<Service[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const data = await cmsApi.getServices();
+        setServices(data);
+      } catch (error) {
+        console.error('Failed to fetch services:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchServices();
+  }, []);
+
+  if (loading) return null;
+
   return (
     <section className="relative py-16 md:py-24 bg-gray-50 font-sans overflow-hidden">
       <Background />
@@ -165,13 +132,13 @@ const ServicesSection = () => {
 
         {/* Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 tracking-wide">
-          {servicesData.map((service, index) => (
+          {services.map((service, index) => (
             <ServiceCard
               key={index}
-              title={service.title}
+              title={service.name}
               description={service.description}
               features={service.features}
-              route={service.route}
+              route={`/${service.slug}`}
             />
           ))}
         </div>

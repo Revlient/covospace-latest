@@ -1,8 +1,27 @@
+import { useState, useEffect } from 'react';
+import { cmsApi } from '../../lib/api';
+import { Client } from '../../types/cms';
+
 export default function ClientMarquee() {
-  const clients = [
-    'TechCorp', 'Innovation Labs', 'StartupHub', 'Digital Solutions', 
-    'Creative Agency', 'Business Pro', 'Future Tech', 'Smart Systems'
-  ];
+  const [clients, setClients] = useState<Client[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchClients = async () => {
+      try {
+        const data = await cmsApi.getClients();
+        setClients(data);
+      } catch (error) {
+        console.error('Failed to fetch clients:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchClients();
+  }, []);
+
+  if (loading) return null; // Or a small loader
 
   return (
     <section className="py-16 bg-white border-y border-gray-100">
@@ -15,9 +34,13 @@ export default function ClientMarquee() {
           <div className="animate-marquee flex space-x-16">
             {[...clients, ...clients].map((client, index) => (
               <div key={index} className="flex-shrink-0">
-                <div className="bg-gray-100 px-8 py-4 rounded-lg text-gray-600 font-semibold text-lg whitespace-nowrap">
-                  {client}
-                </div>
+                {client.logoUrl ? (
+                   <img src={client.logoUrl} alt={client.name} className="h-12 object-contain" />
+                ) : (
+                  <div className="bg-gray-100 px-8 py-4 rounded-lg text-gray-600 font-semibold text-lg whitespace-nowrap">
+                    {client.name}
+                  </div>
+                )}
               </div>
             ))}
           </div>

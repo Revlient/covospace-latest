@@ -1,4 +1,7 @@
+import { useState, useEffect } from 'react';
 import { useQuotePanel } from '../ui/QuotePanelProvider';
+import { cmsApi } from '../../lib/api';
+import { Service } from '../../types/cms';
 
 const ArrowIcon = () => (
   <svg
@@ -13,18 +16,35 @@ const ArrowIcon = () => (
   </svg>
 );
 
+// Helper to format pricing string from the pricing object
+const formatPricing = (pricing: Service['pricing']) => {
+  if (pricing.monthly) return `- ${pricing.monthly} per month`;
+  if (pricing.daily) return `- ${pricing.daily} per day`;
+  if (pricing.hourly) return `- ${pricing.hourly} per hour`;
+  if (pricing.annually) return `- ${pricing.annually} annually`;
+  return '- Contact for pricing';
+};
+
 // Main Pricing Component
 const Pricing = () => {
   const { openQuote } = useQuotePanel();
-  // Data for the pricing list to keep the code clean
-  const services = [
-    { name: 'Private Offices', price: '- 3+1: ₹30,000 | 4+1: ₹35,000 per month' },
-    { name: 'Dedicated Desks', price: '- From ₹6,000 per month' },
-    { name: 'Flexi Desk', price: '- From ₹5,500 per month | ₹500 per day' },
-    { name: 'Virtual Office', price: '- ₹9,500 per month' },
-    { name: 'Conference Rooms', price: '- ₹700 per hour' },
-    { name: 'Business Address', price: '- From ₹40,000 annually' },
-  ];
+  const [services, setServices] = useState<Service[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const data = await cmsApi.getServices();
+        setServices(data);
+      } catch (error) {
+        console.error('Failed to fetch services:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchServices();
+  }, []);
 
   // Data for the green office type buttons
   const officeTypes = [
@@ -75,17 +95,23 @@ const Pricing = () => {
             </div>
 
             {/* Pricing List */}
-            <ul className="space-y-1 pt-1">
-              {services.map((service, index) => (
-                <li
-                  key={index}
-                  className="grid grid-cols-2 items-start text-base md:text-lg leading-snug"
-                >
-                  <span className="font-medium text-black">&#x2022; {service.name}</span>
-                  <span className="font-light text-black/90 text-left">{service.price}</span>
-                </li>
-              ))}
-            </ul>
+            {loading ? (
+              <div className="py-4 flex justify-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-lime-600"></div>
+              </div>
+            ) : (
+              <ul className="space-y-1 pt-1">
+                {services.map((service) => (
+                  <li
+                    key={service.id}
+                    className="grid grid-cols-2 items-start text-base md:text-lg leading-snug"
+                  >
+                    <span className="font-medium text-black">&#x2022; {service.name}</span>
+                    <span className="font-light text-black/90 text-left">{formatPricing(service.pricing)}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
 
             {/* GST Disclaimer */}
             <div className="pt-2">

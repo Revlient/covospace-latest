@@ -1,23 +1,8 @@
+import { useState, useEffect } from 'react';
 import TestimonialCardBackground from "../ui/TestimonalBackground";
 import QuoteIcon from "../ui/QuoteIcon";
-
-const testimonialsData = [
-  {
-    quote: "Their smart panels transformed our classrooms. Teaching is more interactive, and students love it.",
-    name: "Rohan Patel",
-    handle: "@rohanpatel",
-    imageUrl: "https://randomuser.me/api/portraits/men/32.jpg"
-  },
-  {
-    quote: "Their smart panels transformed our classrooms. Teaching is more interactive, and students love it.",
-    name: "Kevin John",
-    handle: "@kevinjohn",
-    imageUrl: "https://randomuser.me/api/portraits/men/86.jpg"
-  },
-];
-
-// --- Reusable SVG Quote Icon ---
-
+import { cmsApi } from '../../lib/api';
+import { Testimonial } from '../../types/cms';
 
 // --- Single Testimonial Card Component ---
 const TestimonialCard = ({ quote, name, handle, imageUrl }: { quote: string; name: string; handle: string; imageUrl: string }) => {
@@ -52,6 +37,34 @@ const TestimonialCard = ({ quote, name, handle, imageUrl }: { quote: string; nam
 
 // --- Main Testimonials Section Component ---
 const Testimonials = () => {
+  const [testimonialsData, setTestimonialsData] = useState<Testimonial[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        const data = await cmsApi.getTestimonials();
+        setTestimonialsData(data);
+      } catch (error) {
+        console.error('Failed to fetch testimonials:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTestimonials();
+  }, []);
+
+  if (loading) {
+    return (
+      <section className="bg-white py-8 sm:py-12 md:py-16 lg:py-20">
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-lime-500"></div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="bg-white py-8 sm:py-12 md:py-16 lg:py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -66,13 +79,13 @@ const Testimonials = () => {
         {/* Mobile: Single Column */}
         <div className="block sm:hidden">
           <div className="space-y-6">
-            {testimonialsData.map((testimonial, index) => (
+            {testimonialsData.map((testimonial) => (
               <TestimonialCard
-                key={index}
+                key={testimonial.id}
                 quote={testimonial.quote}
-                name={testimonial.name}
-                handle={testimonial.handle}
-                imageUrl={testimonial.imageUrl}
+                name={testimonial.clientName}
+                handle={testimonial.role}
+                imageUrl={testimonial.avatarUrl}
               />
             ))}
           </div>
@@ -81,13 +94,13 @@ const Testimonials = () => {
         {/* Tablet: Two Columns */}
         <div className="hidden sm:block md:hidden">
           <div className="grid grid-cols-2 gap-4 sm:gap-6">
-            {testimonialsData.map((testimonial, index) => (
+            {testimonialsData.map((testimonial) => (
               <TestimonialCard
-                key={index}
+                key={testimonial.id}
                 quote={testimonial.quote}
-                name={testimonial.name}
-                handle={testimonial.handle}
-                imageUrl={testimonial.imageUrl}
+                name={testimonial.clientName}
+                handle={testimonial.role}
+                imageUrl={testimonial.avatarUrl}
               />
             ))}
           </div>
@@ -96,8 +109,21 @@ const Testimonials = () => {
         {/* Desktop: Three Columns */}
         <div className="hidden md:block">
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-            {testimonialsData.map((testimonial, index) => (
+            {testimonialsData.map((testimonial) => (
               <TestimonialCard
+                key={testimonial.id}
+                quote={testimonial.quote}
+                name={testimonial.clientName}
+                handle={testimonial.role}
+                imageUrl={testimonial.avatarUrl}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
                 key={index}
                 quote={testimonial.quote}
                 name={testimonial.name}

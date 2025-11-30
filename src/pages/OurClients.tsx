@@ -1,4 +1,7 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { cmsApi } from '../lib/api';
+import { Client } from '../types/cms';
 
 // Icon components
 const ClientsIcon = () => (
@@ -44,6 +47,23 @@ const CheckIcon = () => (
 );
 
 export default function OurClients() {
+  const [clients, setClients] = useState<Client[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchClients = async () => {
+      try {
+        const data = await cmsApi.getClients();
+        setClients(data);
+      } catch (error) {
+        console.error('Failed to fetch clients:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchClients();
+  }, []);
+
   const clientCategories = [
     {
       icon: StartupIcon,
@@ -80,21 +100,6 @@ export default function OurClients() {
       description: "Law firms, accounting firms, consulting companies, and other professional services",
       services: ["Executive offices", "Client conference rooms", "Confidential spaces", "Business address", "Administrative support"]
     }
-  ];
-
-  const clientLogos = [
-    { name: "TechFlow Solutions", industry: "Technology" },
-    { name: "Design Studio Kerala", industry: "Creative" },
-    { name: "GreenTech Innovations", industry: "CleanTech" },
-    { name: "Coastal Consulting", industry: "Professional Services" },
-    { name: "Digital Marketing Pro", industry: "Marketing" },
-    { name: "FinanceWorks", industry: "Financial Services" },
-    { name: "HealthTech Kerala", industry: "Healthcare" },
-    { name: "EduSoft Solutions", industry: "Education Technology" },
-    { name: "Spice Route Exports", industry: "International Trade" },
-    { name: "Maritime Logistics", industry: "Shipping & Logistics" },
-    { name: "Kerala Craft Co.", industry: "E-commerce" },
-    { name: "Innovation Labs", industry: "Research & Development" }
   ];
 
   const successMetrics = [
@@ -208,16 +213,24 @@ export default function OurClients() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-8">
-            {clientLogos.map((client, index) => (
-              <div key={index} className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 text-center hover:shadow-md transition-shadow duration-300">
-                <div className="bg-gray-100 h-16 rounded-lg flex items-center justify-center mb-3">
-                  <span className="text-gray-600 font-semibold text-sm">{client.name}</span>
+          {loading ? (
+            <div className="text-center py-10">Loading clients...</div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-8">
+              {clients.map((client, index) => (
+                <div key={index} className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 text-center hover:shadow-md transition-shadow duration-300">
+                  <div className="bg-gray-100 h-16 rounded-lg flex items-center justify-center mb-3 overflow-hidden">
+                    {client.logoUrl ? (
+                      <img src={client.logoUrl} alt={client.name} className="h-full w-full object-contain p-2" />
+                    ) : (
+                      <span className="text-gray-600 font-semibold text-sm">{client.name}</span>
+                    )}
+                  </div>
+                  {/* <p className="text-xs text-gray-500">{client.industry}</p> */}
                 </div>
-                <p className="text-xs text-gray-500">{client.industry}</p>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

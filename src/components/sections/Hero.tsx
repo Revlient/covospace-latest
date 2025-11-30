@@ -1,4 +1,8 @@
+import { useState, useEffect } from 'react';
 import { useQuotePanel } from '../ui/QuotePanelProvider';
+import { cmsApi } from '../../lib/api';
+import { GlobalSettings } from '../../types/cms';
+
 // Icon component for the button, recreated as an SVG
 const QuoteIcon = () => (
   <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -9,8 +13,24 @@ const QuoteIcon = () => (
 
 
 const Hero= () => {
+  const [settings, setSettings] = useState<GlobalSettings | null>(null);
+
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const data = await cmsApi.getSettings();
+        setSettings(data);
+      } catch (error) {
+        console.error('Failed to fetch settings:', error);
+      }
+    };
+    fetchSettings();
+  }, []);
+
   // NOTE: Replace this with the actual URL or path to your hero image.
-  const heroImageUrl = 'https://res.cloudinary.com/dobqxxtml/image/upload/v1759083000/b16da8c5-83c7-49aa-a157-725f02ca5753.png';
+  const heroImageUrl = settings?.hero_image || 'https://res.cloudinary.com/dobqxxtml/image/upload/v1759083000/b16da8c5-83c7-49aa-a157-725f02ca5753.png';
+  const heroTitle = settings?.hero_title || "Exclusive Offices & Workspaces in the Center of Kochi.";
+  const heroDescription = settings?.hero_description || "Covspace is a premier coworking and shared workspace provider based in Kochi, Kerala. We offer fully managed private offices, collaborative coworking spaces, conference rooms, and virtual office services.";
   
   const { openQuote } = useQuotePanel();
 
@@ -41,9 +61,7 @@ const Hero= () => {
             className="text-xl xs:text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 leading-tight text-center sm:text-left" 
             style={{ fontFamily: 'Istok Web', fontStyle: 'italic' }}
           >
-            <span className="block">Exclusive Offices &</span>
-            <span className="block">Workspaces in the Center</span>
-            <span className="block">of Kochi.</span>
+             {heroTitle}
           </h1>
 
           {/* Paragraph description - responsive text sizing */}
@@ -51,7 +69,7 @@ const Hero= () => {
             className="mt-4 sm:mt-6 text-gray-600 text-xs xs:text-sm sm:text-sm md:text-base leading-relaxed text-center sm:text-left" 
             style={{ fontFamily: 'Istok Web', fontStyle: 'italic' }}
           >
-            Covspace is a premier coworking and shared workspace provider based in Kochi, Kerala. We offer fully managed private offices, collaborative coworking spaces, conference rooms, and virtual office services.
+            {heroDescription}
           </p>
 
           {/* Quick Quote Button - mobile-optimized */}

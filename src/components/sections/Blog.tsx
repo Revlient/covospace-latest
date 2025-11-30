@@ -1,62 +1,6 @@
-
-const blogData = [
-  {
-    id: 1,
-    title: "The Future of Remote Work",
-    excerpt: "Exploring how coworking spaces are reshaping the modern workplace experience.",
-    date: "Dec 15, 2023",
-    image: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&h=250&fit=crop"
-  },
-  {
-    id: 2,
-    title: "Productivity Tips for Entrepreneurs",
-    excerpt: "Essential strategies to maximize your efficiency in a shared workspace environment.",
-    date: "Dec 12, 2023",
-    image: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=400&h=250&fit=crop"
-  },
-  {
-    id: 3,
-    title: "Building Your Network",
-    excerpt: "How coworking spaces foster meaningful professional connections and collaborations.",
-    date: "Dec 8, 2023",
-    image: "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=400&h=250&fit=crop"
-  },
-  {
-    id: 4,
-    title: "Design Trends in Workspaces",
-    excerpt: "Latest interior design trends that are transforming office spaces worldwide.",
-    date: "Dec 5, 2023",
-    image: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=400&h=250&fit=crop"
-  },
-  {
-    id: 5,
-    title: "Sustainable Office Practices",
-    excerpt: "Green initiatives and eco-friendly practices for modern workspaces.",
-    date: "Dec 1, 2023",
-    image: "https://images.unsplash.com/photo-1497366412874-3415097a27e7?w=400&h=250&fit=crop"
-  },
-  {
-    id: 6,
-    title: "Work-Life Balance Guide",
-    excerpt: "Maintaining healthy boundaries while working in flexible environments.",
-    date: "Nov 28, 2023",
-    image: "https://images.unsplash.com/photo-1515378960530-7c0da6231fb1?w=400&h=250&fit=crop"
-  },
-  {
-    id: 7,
-    title: "Technology in Coworking",
-    excerpt: "How smart technology is enhancing the coworking experience for professionals.",
-    date: "Nov 25, 2023",
-    image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=400&h=250&fit=crop"
-  },
-  {
-    id: 8,
-    title: "Community Building Strategies",
-    excerpt: "Creating strong communities within shared workspace environments.",
-    date: "Nov 22, 2023",
-    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=250&fit=crop"
-  }
-];
+import { useState, useEffect } from 'react';
+import { cmsApi } from '../../lib/api';
+import { BlogPost } from '../../types/cms';
 
 const SeeMoreIcon = () => (
   <svg 
@@ -71,6 +15,25 @@ const SeeMoreIcon = () => (
 );
 
 const Blog = () => {
+  const [blogData, setBlogData] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const data = await cmsApi.getPosts();
+        // Take only the first 8 posts for the home page section
+        setBlogData(data.slice(0, 8));
+      } catch (error) {
+        console.error('Failed to fetch blog posts:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPosts();
+  }, []);
+
   return (
     // Mobile-first responsive container
     <section className="relative w-full py-8 sm:py-12 md:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
@@ -94,40 +57,46 @@ const Blog = () => {
           </header>
 
           {/* Responsive grid for blog posts */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6">
-            
-            {blogData.map((post) => (
-              <div 
-                key={post.id} 
-                className="bg-white rounded-xl sm:rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer group min-h-[280px] sm:min-h-[320px] flex flex-col"
-              >
-                {/* Blog Image */}
-                <div className="relative h-40 sm:h-44 md:h-36 lg:h-32 xl:h-36 overflow-hidden flex-shrink-0">
-                  <img 
-                    src={post.image} 
-                    alt={post.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300"></div>
+          {loading ? (
+            <div className="flex justify-center items-center h-64">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-lime-500"></div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6">
+              
+              {blogData.map((post) => (
+                <div 
+                  key={post.id} 
+                  className="bg-white rounded-xl sm:rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer group min-h-[280px] sm:min-h-[320px] flex flex-col"
+                >
+                  {/* Blog Image */}
+                  <div className="relative h-40 sm:h-44 md:h-36 lg:h-32 xl:h-36 overflow-hidden flex-shrink-0">
+                    <img 
+                      src={post.coverImage} 
+                      alt={post.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300"></div>
+                  </div>
+                  
+                  {/* Blog Content */}
+                  <div className="p-3 sm:p-4 md:p-5 flex flex-col flex-grow">
+                    <h3 className="text-gray-900 font-semibold text-sm sm:text-base md:text-lg line-clamp-2 mb-2 sm:mb-3 leading-tight">
+                      {post.title}
+                    </h3>
+                    <p className="text-gray-600 text-xs sm:text-sm md:text-base line-clamp-2 sm:line-clamp-3 mb-2 sm:mb-3 leading-relaxed flex-grow">
+                      {post.excerpt}
+                    </p>
+                    <p className="text-gray-400 text-xs sm:text-sm mt-auto">
+                      {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString() : ''}
+                    </p>
+                  </div>
                 </div>
-                
-                {/* Blog Content */}
-                <div className="p-3 sm:p-4 md:p-5 flex flex-col flex-grow">
-                  <h3 className="text-gray-900 font-semibold text-sm sm:text-base md:text-lg line-clamp-2 mb-2 sm:mb-3 leading-tight">
-                    {post.title}
-                  </h3>
-                  <p className="text-gray-600 text-xs sm:text-sm md:text-base line-clamp-2 sm:line-clamp-3 mb-2 sm:mb-3 leading-relaxed flex-grow">
-                    {post.excerpt}
-                  </p>
-                  <p className="text-gray-400 text-xs sm:text-sm mt-auto">
-                    {post.date}
-                  </p>
-                </div>
-              </div>
-            ))}
+              ))}
 
-          </div>
+            </div>
+          )}
         </div>
       </div>
     </section>
