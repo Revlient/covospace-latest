@@ -8,10 +8,12 @@ import {
   ApiResponse 
 } from '../types/cms';
 
-const API_BASE_URL = '/api';
+const API_BASE_URL = 'https://covospace-cms-5aaa.vercel.app/api';
 
 async function fetchAPI<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+  const url = `${API_BASE_URL}${endpoint}`;
+
+  const response = await fetch(url, {
     ...options,
     headers: {
       'Content-Type': 'application/json',
@@ -20,9 +22,9 @@ async function fetchAPI<T>(endpoint: string, options: RequestInit = {}): Promise
   });
 
   if (!response.ok) {
-    throw new Error(`API Error: ${response.statusText}`);
+    throw new Error(`API Error: ${response.statusText} (${response.status})`);
   }
-//   console.log(response.json());
+
   return response.json();
 }
 
